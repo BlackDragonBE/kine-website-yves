@@ -5,6 +5,7 @@
 
     // children is een speciale Svelte 5 prop voor geneste inhoud
     let { children } = $props();
+    
 </script>
 
 <style>
@@ -24,3 +25,4 @@
   <main>{@render children()}</main>
   <Footer />
 </div>
+
