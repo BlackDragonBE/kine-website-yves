@@ -811,6 +811,8 @@
 		font-size: 19px;
 		font-weight: 700;
 		color: #1078b2;
+		white-space: nowrap;
+		margin-left: 16px;
 	}
 
 	.muted {
@@ -1026,11 +1028,16 @@
 	/* responsive */
 	@media (max-width: 960px) {
 		h1 {
-			font-size: 38px;
+			font-size: clamp(32px, 8.5vw, 38px);
 		}
 
 		h2 {
-			font-size: 30px;
+			font-size: clamp(26px, 7vw, 30px);
+		}
+
+		.cta h2,
+		.over h2 {
+			font-size: clamp(26px, 7vw, 30px);
 		}
 
 		.hero-inner,
@@ -1039,6 +1046,11 @@
 		.adres-grid {
 			grid-template-columns: 1fr;
 			gap: 40px;
+		}
+
+		.hero-inner {
+			padding-top: 48px;
+			padding-bottom: 64px;
 		}
 
 		.svc-grid,
@@ -1061,6 +1073,9 @@
 
 		.hero-card {
 			left: 12px;
+			right: 12px;
+			bottom: 12px;
+			padding: 14px 18px;
 		}
 
 		.section {
@@ -1071,6 +1086,125 @@
 		.over-inner {
 			padding-top: 64px;
 			padding-bottom: 64px;
+		}
+
+		.cta-inner {
+			padding-top: 64px;
+			padding-bottom: 64px;
+		}
+	}
+
+	@media (max-width: 560px) {
+		.container,
+		.hero-inner,
+		.over-inner,
+		.trust-inner,
+		.cta-inner {
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+
+		.section-head {
+			margin-bottom: 40px;
+		}
+
+		.lead,
+		.cta-lead {
+			font-size: 16.5px;
+		}
+
+		.over-p,
+		.section-head p {
+			font-size: 16px;
+		}
+
+		/* knoppen over de volle breedte — makkelijker aan te tikken */
+		.cta-row {
+			flex-direction: column;
+			align-items: stretch;
+			gap: 12px;
+		}
+
+		.btn-primary,
+		.btn-secondary,
+		.btn-ghost {
+			text-align: center;
+			padding: 16px 24px;
+		}
+
+		.btn-primary:hover {
+			transform: none;
+		}
+
+		.hero-photo > img {
+			height: 300px;
+		}
+
+		.over-photo img {
+			height: 320px;
+		}
+
+		.svc,
+		.step {
+			padding: 26px 22px;
+		}
+
+		.info-card {
+			padding: 22px;
+		}
+
+		.price-card {
+			padding: 26px 22px;
+		}
+
+		.price-row {
+			font-size: 15px;
+			padding: 14px 0;
+		}
+
+		.price {
+			font-size: 17px;
+		}
+
+		.adres-card {
+			padding: 24px 22px;
+		}
+
+		iframe {
+			min-height: 300px;
+		}
+
+		.trust-inner {
+			gap: 18px;
+			padding-top: 22px;
+			padding-bottom: 22px;
+		}
+
+		.stat-nr {
+			font-size: 22px;
+		}
+
+		.stat-nr.big {
+			font-size: 26px;
+		}
+
+		.over-stats {
+			gap: 24px;
+		}
+
+		.cta-details {
+			flex-direction: column;
+			gap: 20px;
+		}
+
+		.cta-details a {
+			display: inline-block;
+			padding: 4px 0;
+		}
+
+		.cta-watermark {
+			height: 220px;
+			right: -60px;
 		}
 	}
 </style>
