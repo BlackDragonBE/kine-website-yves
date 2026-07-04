@@ -1,5 +1,33 @@
 <script lang="ts">
-	import { afspraakUrl } from '$lib/config';
+	import { afspraakUrl, siteUrl } from '$lib/config';
+
+	const schema = JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': 'Physiotherapy',
+		name: 'Kine Demol',
+		description:
+			'Persoonlijke kinesitherapie en manuele therapie in Machelen door Yves Demol, erkend manueel therapeut.',
+		url: siteUrl,
+		image: `${siteUrl}/hero.webp`,
+		telephone: '+32494836584',
+		email: 'kine.demol@gmail.com',
+		priceRange: '€€',
+		address: {
+			'@type': 'PostalAddress',
+			streetAddress: 'de Neufforgestraat 2',
+			postalCode: '1830',
+			addressLocality: 'Machelen',
+			addressCountry: 'BE'
+		},
+		geo: { '@type': 'GeoCoordinates', latitude: 50.9140912, longitude: 4.4382626 },
+		openingHoursSpecification: {
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '08:00',
+			closes: '20:00'
+		},
+		founder: { '@type': 'Person', name: 'Yves Demol', jobTitle: 'Kinesitherapeut' }
+	});
 
 	const behandelingen = [
 		{
@@ -70,6 +98,20 @@
 		name="description"
 		content="Persoonlijke kinesitherapie en manuele therapie in Machelen. Behandeling van rug-, nek-, gewrichts- en spierklachten door Yves Demol, erkend manueel therapeut."
 	/>
+	<link rel="canonical" href={siteUrl} />
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="nl_BE" />
+	<meta property="og:site_name" content="Kine Demol" />
+	<meta property="og:title" content="Kine Demol · Kinesitherapie & Manuele therapie in Machelen" />
+	<meta
+		property="og:description"
+		content="Persoonlijke kinesitherapie en manuele therapie in Machelen. Behandeling van rug-, nek-, gewrichts- en spierklachten door Yves Demol, erkend manueel therapeut."
+	/>
+	<meta property="og:url" content={siteUrl} />
+	<meta property="og:image" content="{siteUrl}/hero.webp" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -- statische JSON-LD, geen user input -->
+	{@html `<script type="application/ld+json">${schema}${'<'}/script>`}
 </svelte:head>
 
 <!-- hero -->

@@ -18,6 +18,7 @@ jobs:
       - run: npm run build
       - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
+          protocol: ftps
           server: shared212.cloud86-host.io
           username: eric
           password: ${{ secrets.FTP_PASSWORD }}

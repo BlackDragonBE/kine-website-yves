@@ -1,42 +1,32 @@
-# sv
+# Kine Demol — kinedemol.be
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Marketing website for Kine Demol, a physiotherapy practice in Machelen, Belgium. Single-page, Dutch-language, fully prerendered static site.
 
-## Creating a project
+**Stack:** SvelteKit (Svelte 5) · TypeScript · Tailwind CSS 4 · `@sveltejs/adapter-static`
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
+## Development
 
 ```sh
-# recreate this project
-npx sv@0.14.0 create --template minimal --types ts --add eslint prettier --install npm kine-website
+npm install
+npm run dev        # dev server (add -- --open to open a browser)
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Other scripts:
 
 ```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+npm run build      # prerender the site into build/
+npm run preview    # serve the production build on 127.0.0.1:3000
+npm run check      # svelte-check type checking
+npm run lint       # prettier check + eslint
+npm run format     # prettier write
 ```
 
-## Building
+## Deployment
 
-To create a production version of your app:
+Every push to `main` triggers [.github/workflows/deploy.yml](.github/workflows/deploy.yml): the site is built and uploaded over FTPS to the Cloud86 shared host (`httpdocs/`). The FTP password lives in the `FTP_PASSWORD` repository secret.
 
-```sh
-npm run build
-```
+## Notes
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- All page content is in `src/routes/+page.svelte`; site-wide config (booking URL, site URL) is in `src/lib/config.ts`.
+- The site is fully prerendered (`prerender = true`) — SEO tags, Open Graph, and JSON-LD structured data end up in the static HTML.
+- Site copy is in Dutch; keep it that way.
