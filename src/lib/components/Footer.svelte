@@ -47,4 +47,14 @@
 	.copy {
 		font-size: 13px;
 	}
+
+	@media (max-width: 560px) {
+		.inner {
+			flex-direction: column;
+			justify-content: center;
+			text-align: center;
+			padding: 32px 20px;
+			gap: 14px;
+		}
+	}
 </style>

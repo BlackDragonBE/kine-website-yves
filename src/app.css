@@ -18,6 +18,23 @@
 	--font-sans: 'Montserrat', sans-serif;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
+
+/* anker-secties niet onder de sticky nav laten belanden */
+[id] {
+	scroll-margin-top: 84px;
+}
+
 body {
 	font-family: 'Montserrat', sans-serif;
+	overflow-x: clip;
+	-webkit-text-size-adjust: 100%;
 }
