@@ -133,7 +133,7 @@
 			</div>
 		</div>
 		<div use:reveal class="hero-photo">
-			<img src="/hero.webp" alt="Praktijkruimte van Kine Demol" />
+			<img src="/hero.webp" alt="Manuele therapie behandeling bij Kine Demol" />
 			<div class="hero-card">
 				<img src="/mark-blue.svg" alt="" class="hero-card-mark" />
 				<div>
