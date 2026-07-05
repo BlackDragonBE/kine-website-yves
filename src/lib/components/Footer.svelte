@@ -1,10 +1,16 @@
+<script lang="ts">
+	import { lang, messages } from '$lib/i18n.svelte';
+
+	const t = $derived(messages[lang.current]);
+</script>
+
 <footer>
 	<div class="inner">
 		<div class="brand">
 			<img src="/mark-white.svg" alt="" class="mark" />
 			<span class="name">KINE DEMOL</span>
 		</div>
-		<span class="copy">© {new Date().getFullYear()} Yves Demol · Alle rechten voorbehouden</span>
+		<span class="copy">© {new Date().getFullYear()} Yves Demol · {t.footer.rechten}</span>
 	</div>
 </footer>
 

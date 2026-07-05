@@ -3,9 +3,23 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="color-scheme" content="light dark" />
 		<link rel="icon" href="/favicon.ico" sizes="32x32" />
 		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<script>
+			// thema en taal vóór de eerste paint zetten (geen flash)
+			try {
+				document.documentElement.dataset.theme =
+					localStorage.getItem('theme') ||
+					(matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+				var lang = localStorage.getItem('lang');
+				if (lang === 'fr') document.documentElement.lang = 'fr-BE';
+				else if (lang === 'en') document.documentElement.lang = 'en';
+			} catch (e) {
+				/* localStorage niet beschikbaar */
+			}
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

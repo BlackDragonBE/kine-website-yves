@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { afspraakUrl, siteUrl } from '$lib/config';
+	import { lang, messages } from '$lib/i18n.svelte';
+
+	const t = $derived(messages[lang.current]);
 
 	const schema = JSON.stringify({
 		'@context': 'https://schema.org',
@@ -29,43 +32,6 @@
 		founder: { '@type': 'Person', name: 'Yves Demol', jobTitle: 'Kinesitherapeut' }
 	});
 
-	const behandelingen = [
-		{
-			nr: '01',
-			titel: 'Manuele therapie',
-			tekst:
-				'Gerichte mobilisaties van wervelkolom en gewrichten bij nek-, rug- en hoofdpijnklachten.'
-		},
-		{
-			nr: '02',
-			titel: 'Algemene kinesitherapie',
-			tekst:
-				'Revalidatie na operatie, blessure of langdurige inactiviteit met een oefenprogramma op maat.'
-		},
-		{
-			nr: '03',
-			titel: 'Sportrevalidatie',
-			tekst:
-				'Terugkeer naar uw sport na blessure, met opbouw van kracht, stabiliteit en vertrouwen.'
-		},
-		{
-			nr: '04',
-			titel: 'Vestibulaire kinesitherapie',
-			tekst: 'Behandeling van duizeligheid en vertigo problematiek.'
-		},
-		{
-			nr: '05',
-			titel: 'Rug- & houdingsscholing',
-			tekst:
-				'Leer uw rug correct belasten in werk en dagelijks leven om klachten te voorkomen, én behandeling van chronische lage rugpijn.'
-		},
-		{
-			nr: '06',
-			titel: 'Oedeem- & lymfetherapie',
-			tekst: 'Manuele lymfedrainage bij zwelling na operatie of trauma om herstel te versnellen.'
-		}
-	];
-
 	// scroll-reveal via inline styles zodat Svelte de runtime-klasse niet wegsnoeit
 	let revealIndex = 0;
 	function reveal(el: HTMLElement) {
@@ -93,20 +59,14 @@
 </script>
 
 <svelte:head>
-	<title>Kine Demol · Kinesitherapie & Manuele therapie in Machelen</title>
-	<meta
-		name="description"
-		content="Persoonlijke kinesitherapie en manuele therapie in Machelen. Behandeling van rug-, nek-, gewrichts- en spierklachten door Yves Demol, erkend manueel therapeut."
-	/>
+	<title>{t.meta.title}</title>
+	<meta name="description" content={t.meta.description} />
 	<link rel="canonical" href={siteUrl} />
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="nl_BE" />
 	<meta property="og:site_name" content="Kine Demol" />
-	<meta property="og:title" content="Kine Demol · Kinesitherapie & Manuele therapie in Machelen" />
-	<meta
-		property="og:description"
-		content="Persoonlijke kinesitherapie en manuele therapie in Machelen. Behandeling van rug-, nek-, gewrichts- en spierklachten door Yves Demol, erkend manueel therapeut."
-	/>
+	<meta property="og:title" content={t.meta.title} />
+	<meta property="og:description" content={t.meta.description} />
 	<meta property="og:url" content={siteUrl} />
 	<meta property="og:image" content="{siteUrl}/hero.webp" />
 	<meta name="twitter:card" content="summary_large_image" />
@@ -120,25 +80,22 @@
 		<div use:reveal>
 			<div class="badge">
 				<span class="dot"></span>
-				Kinesitherapie &amp; Manuele therapie
+				{t.hero.badge}
 			</div>
-			<h1>Uw herstel, met vakkundige handen begeleid.</h1>
-			<p class="lead">
-				Persoonlijke kinesitherapie en manuele therapie in hartje Machelen. Wij behandelen klachten
-				aan rug, nek, gewrichten en spieren. Dat doen we met tijd, aandacht en jarenlange expertise.
-			</p>
+			<h1>{t.hero.title}</h1>
+			<p class="lead">{t.hero.lead}</p>
 			<div class="cta-row">
-				<a href={afspraakUrl} rel="external" class="btn-primary">Afspraak maken</a>
-				<a href="#behandelingen" class="btn-secondary">Bekijk behandelingen</a>
+				<a href={afspraakUrl} rel="external" class="btn-primary">{t.hero.cta}</a>
+				<a href="#behandelingen" class="btn-secondary">{t.hero.cta2}</a>
 			</div>
 		</div>
 		<div use:reveal class="hero-photo">
-			<img src="/hero.webp" alt="Manuele therapie behandeling bij Kine Demol" />
+			<img src="/hero.webp" alt={t.hero.fotoAlt} />
 			<div class="hero-card">
 				<img src="/mark-blue.svg" alt="" class="hero-card-mark" />
 				<div>
 					<div class="hero-card-name">Yves Demol</div>
-					<div class="hero-card-sub">Erkend manueel therapeut</div>
+					<div class="hero-card-sub">{t.hero.cardSub}</div>
 				</div>
 			</div>
 		</div>
@@ -148,39 +105,26 @@
 <!-- trust strip -->
 <section class="trust">
 	<div class="trust-inner">
-		<div use:reveal class="stat">
-			<div class="stat-nr">RIZIV</div>
-			<div class="stat-sub">gedeconventioneerd</div>
-		</div>
-		<div use:reveal class="stat">
-			<div class="stat-nr">10+ jaar</div>
-			<div class="stat-sub">ervaring</div>
-		</div>
-		<div use:reveal class="stat">
-			<div class="stat-nr">tot 20u</div>
-			<div class="stat-sub">open op weekdagen</div>
-		</div>
-		<div use:reveal class="stat">
-			<div class="stat-nr">1-op-1</div>
-			<div class="stat-sub">persoonlijke begeleiding</div>
-		</div>
+		{#each t.trust as stat, i (i)}
+			<div use:reveal class="stat">
+				<div class="stat-nr">{stat.nr}</div>
+				<div class="stat-sub">{stat.sub}</div>
+			</div>
+		{/each}
 	</div>
 </section>
 
 <!-- behandelingen -->
 <section id="behandelingen" class="container section">
 	<div use:reveal class="section-head">
-		<div class="eyebrow">Behandelingen</div>
-		<h2>Zorg afgestemd op uw klacht</h2>
-		<p>
-			Van een acute blessure tot langdurige rug- en nekklachten: elke behandeling start met een
-			grondig onderzoek en een plan op maat.
-		</p>
+		<div class="eyebrow">{t.behandelingen.eyebrow}</div>
+		<h2>{t.behandelingen.title}</h2>
+		<p>{t.behandelingen.lead}</p>
 	</div>
 	<div class="svc-grid">
-		{#each behandelingen as b (b.nr)}
+		{#each t.behandelingen.items as b, i (i)}
 			<div use:reveal class="svc">
-				<div class="svc-nr">{b.nr}</div>
+				<div class="svc-nr">{String(i + 1).padStart(2, '0')}</div>
 				<h3>{b.titel}</h3>
 				<p>{b.tekst}</p>
 			</div>
@@ -192,33 +136,22 @@
 <section id="over" class="over">
 	<div class="over-inner">
 		<div use:reveal class="over-photo">
-			<img src="/portrait.webp" alt="Portret van Yves Demol" />
+			<img src="/portrait.webp" alt={t.over.fotoAlt} />
 		</div>
 		<div use:reveal>
-			<div class="eyebrow">Over de praktijk</div>
-			<h2>Eén vertrouwd aanspreekpunt voor uw herstel</h2>
-			<p class="over-p">
-				Bij Kine Demol wordt u van begin tot einde begeleid door dezelfde therapeut. Geen wisselende
-				gezichten, wél een grondig opgebouwd behandelplan en de tijd om echt naar uw klacht te
-				luisteren.
-			</p>
-			<p class="over-p">
-				Yves Demol combineert klassieke kinesitherapie met manuele therapie om zowel de oorzaak als
-				de symptomen aan te pakken.
-			</p>
-			<p class="over-p">
-				Hij volgt regelmatig bijscholingen waardoor hij geregistreerd staat in het
-				kwaliteitsregister voor kinesitherapie en ook de bijzondere beroepsbekwaamheid in de manuele
-				therapie bezit.
-			</p>
+			<div class="eyebrow">{t.over.eyebrow}</div>
+			<h2>{t.over.title}</h2>
+			<p class="over-p">{t.over.p1}</p>
+			<p class="over-p">{t.over.p2}</p>
+			<p class="over-p">{t.over.p3}</p>
 			<div class="over-stats">
 				<div>
-					<div class="stat-nr big">Erkend</div>
-					<div class="stat-sub">manueel therapeut</div>
+					<div class="stat-nr big">{t.over.stat1.nr}</div>
+					<div class="stat-sub">{t.over.stat1.sub}</div>
 				</div>
 				<div>
-					<div class="stat-nr big">Op maat</div>
-					<div class="stat-sub">behandelplan per patiënt</div>
+					<div class="stat-nr big">{t.over.stat2.nr}</div>
+					<div class="stat-sub">{t.over.stat2.sub}</div>
 				</div>
 			</div>
 		</div>
@@ -228,53 +161,25 @@
 <!-- praktisch -->
 <section id="praktisch" class="container section">
 	<div use:reveal class="section-head">
-		<div class="eyebrow">Praktisch</div>
-		<h2>Verloop van uw afspraak</h2>
+		<div class="eyebrow">{t.praktisch.eyebrow}</div>
+		<h2>{t.praktisch.title}</h2>
 	</div>
 	<div use:reveal>
 		<div class="steps">
-			<div class="step">
-				<div class="step-nr">1</div>
-				<p>
-					Bij uw eerste afspraak brengt u uw <strong>voorschrift en identiteitskaart</strong> mee. Beschikt
-					u over medische beeldvorming en/of een operatieverslag? Neem dit gerust ook mee.
-				</p>
-			</div>
-			<div class="step">
-				<div class="step-nr">2</div>
-				<p>
-					We nemen de tijd voor een <strong>intake</strong>: het kinesitherapeutisch gesprek en een
-					grondig onderzoek.
-				</p>
-			</div>
-			<div class="step">
-				<div class="step-nr">3</div>
-				<p>
-					Samen stellen we een <strong>behandelplan op maat</strong> op, afgestemd op uw klacht en doelen.
-				</p>
-			</div>
+			{#each t.praktisch.steps as stap, i (i)}
+				<div class="step">
+					<div class="step-nr">{i + 1}</div>
+					<p>{stap.pre}<strong>{stap.strong}</strong>{stap.post}</p>
+				</div>
+			{/each}
 		</div>
 		<div class="info-cards">
-			<div class="info-card">
-				<div class="info-title">Duur van de behandeling</div>
-				<p>
-					De eerste sessie duurt ongeveer 45 minuten, de daaropvolgende sessies ongeveer 30 minuten.
-				</p>
-			</div>
-			<div class="info-card">
-				<div class="info-title">Verhinderd?</div>
-				<p>
-					Gelieve minstens 24 uur op voorhand te verwittigen. Zo niet rekenen wij een sessie aan die
-					niet door uw mutualiteit wordt terugbetaald.
-				</p>
-			</div>
-			<div class="info-card">
-				<div class="info-title">Zonder voorschrift</div>
-				<p>
-					U kan zich ook aanmelden zonder voorschrift van een arts. Deze sessies worden niet
-					terugbetaald door uw mutualiteit.
-				</p>
-			</div>
+			{#each t.praktisch.cards as card, i (i)}
+				<div class="info-card">
+					<div class="info-title">{card.titel}</div>
+					<p>{card.tekst}</p>
+				</div>
+			{/each}
 		</div>
 	</div>
 </section>
@@ -283,44 +188,37 @@
 <section id="tarieven" class="tarieven">
 	<div class="container section">
 		<div use:reveal class="section-head">
-			<div class="eyebrow">Tarieven</div>
-			<h2>Heldere, eerlijke prijzen</h2>
+			<div class="eyebrow">{t.tarieven.eyebrow}</div>
+			<h2>{t.tarieven.title}</h2>
 		</div>
 		<div class="price-grid">
 			<div use:reveal class="price-card">
-				<h3>Standaardtarieven</h3>
-				<p class="price-sub">Gangbare tarieven van de praktijk.</p>
-				<div class="price-row">
-					<span>Intakegesprek + aanmaak dossier</span><span class="price">€ 65,00</span>
-				</div>
-				<div class="price-row"><span>Eén sessie</span><span class="price">€ 39,00</span></div>
-				<div class="price-row last">
-					<span>Behandeling aan huis <span class="muted">(incl. verplaatsing)</span></span><span
-						class="price">€ 42,00</span
-					>
-				</div>
+				<h3>{t.tarieven.std.titel}</h3>
+				<p class="price-sub">{t.tarieven.std.sub}</p>
+				{#each t.tarieven.std.rows as rij, i (i)}
+					<div class="price-row" class:last={i === t.tarieven.std.rows.length - 1}>
+						<span
+							>{rij.label}{#if rij.note}
+								<span class="muted">{rij.note}</span>{/if}</span
+						><span class="price">{rij.prijs}</span>
+					</div>
+				{/each}
 			</div>
 			<div use:reveal class="price-card dark">
-				<h3>Verhoogde tegemoetkoming</h3>
-				<p class="price-sub">
-					Bij recht op verhoogde tegemoetkoming zijn wij verplicht de officiële RIZIV-tarieven te
-					hanteren.
-				</p>
-				<div class="price-row"><span>Intake dossier</span><span class="price">€ 7,38</span></div>
-				<div class="price-row">
-					<span>Eén sessie <span class="muted">(30 min)</span></span><span class="price"
-						>€ 31,64</span
-					>
-				</div>
-				<div class="price-row last">
-					<span>Huisbezoek <span class="muted">(30 min)</span></span><span class="price"
-						>€ 34,80</span
-					>
-				</div>
+				<h3>{t.tarieven.verhoogd.titel}</h3>
+				<p class="price-sub">{t.tarieven.verhoogd.sub}</p>
+				{#each t.tarieven.verhoogd.rows as rij, i (i)}
+					<div class="price-row" class:last={i === t.tarieven.verhoogd.rows.length - 1}>
+						<span
+							>{rij.label}{#if rij.note}
+								<span class="muted">{rij.note}</span>{/if}</span
+						><span class="price">{rij.prijs}</span>
+					</div>
+				{/each}
 			</div>
 		</div>
 		<p use:reveal class="pay-note">
-			Betaling is mogelijk via <strong>Bancontact, cash of overschrijving</strong>.
+			{t.tarieven.payNote.pre}<strong>{t.tarieven.payNote.strong}</strong>{t.tarieven.payNote.post}
 		</p>
 	</div>
 </section>
@@ -328,30 +226,34 @@
 <!-- adres -->
 <section id="adres" class="container section">
 	<div use:reveal class="section-head">
-		<div class="eyebrow">Contact</div>
-		<h2>Adres &amp; openingsuren</h2>
+		<div class="eyebrow">{t.adres.eyebrow}</div>
+		<h2>{t.adres.title}</h2>
 	</div>
 	<div class="adres-grid">
 		<div use:reveal class="adres-col">
 			<div class="adres-card">
-				<h3>Adres</h3>
+				<h3>{t.adres.adresTitel}</h3>
 				<p class="adres-lijn">de Neufforgestraat 2<br />1830 Machelen</p>
-				<p class="adres-note">Vlot bereikbaar met de wagen · parkeergelegenheid in de straat</p>
+				<p class="adres-note">{t.adres.adresNote}</p>
 			</div>
 			<div class="adres-card">
-				<h3>Openingsuren</h3>
+				<h3>{t.adres.urenTitel}</h3>
 				<div class="uren">
 					<div class="uur-rij">
-						<span>Maandag – Vrijdag</span><span class="open">08:00 – 20:00</span>
+						<span>{t.adres.maVr}</span><span class="open">08:00 – 20:00</span>
 					</div>
-					<div class="uur-rij"><span>Zaterdag</span><span class="dicht">Gesloten</span></div>
-					<div class="uur-rij last"><span>Zondag</span><span class="dicht">Gesloten</span></div>
+					<div class="uur-rij">
+						<span>{t.adres.za}</span><span class="dicht">{t.adres.gesloten}</span>
+					</div>
+					<div class="uur-rij last">
+						<span>{t.adres.zo}</span><span class="dicht">{t.adres.gesloten}</span>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div use:reveal>
 			<iframe
-				title="Kaart Kine Demol"
+				title={t.adres.kaartTitel}
 				src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3049.41330599854!2d4.4382626!3d50.914091199999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3dd438c0117ed%3A0x98fbe4cee1f9024!2sKine%20Demol!5e1!3m2!1sen!2sbe!4v1783103509661!5m2!1sen!2sbe"
 				allowfullscreen
 				loading="lazy"
@@ -366,22 +268,19 @@
 	<img src="/mark-white.svg" alt="" class="cta-watermark" />
 	<div class="cta-inner">
 		<div use:reveal class="cta-content">
-			<h2>Klaar om aan uw herstel te beginnen?</h2>
-			<p class="cta-lead">
-				Maak vandaag nog een afspraak. Heeft u een vraag over een klacht of terugbetaling? Bel of
-				mail ons gerust.
-			</p>
+			<h2>{t.cta.title}</h2>
+			<p class="cta-lead">{t.cta.lead}</p>
 			<div class="cta-row">
-				<a href={afspraakUrl} rel="external" class="btn-primary light-hover">Afspraak maken</a>
+				<a href={afspraakUrl} rel="external" class="btn-primary light-hover">{t.cta.btn}</a>
 				<a href="tel:+32494836584" class="btn-ghost">0494 83 65 84</a>
 			</div>
 			<div class="cta-details">
 				<div>
-					<div class="cta-label">E-mail</div>
+					<div class="cta-label">{t.cta.email}</div>
 					<a href="mailto:kine.demol@gmail.com">kine.demol@gmail.com</a>
 				</div>
 				<div>
-					<div class="cta-label">Adres</div>
+					<div class="cta-label">{t.cta.adres}</div>
 					de Neufforgestraat 2, 1830 Machelen
 				</div>
 			</div>
@@ -406,7 +305,7 @@
 		font-size: 52px;
 		line-height: 1.08;
 		font-weight: 700;
-		color: #243645;
+		color: var(--text-strong);
 		letter-spacing: -0.01em;
 		margin-bottom: 22px;
 		text-wrap: balance;
@@ -415,12 +314,12 @@
 	h2 {
 		font-size: 38px;
 		font-weight: 700;
-		color: #243645;
+		color: var(--text-strong);
 		letter-spacing: -0.01em;
 	}
 
 	.eyebrow {
-		color: #1078b2;
+		color: var(--brand);
 		font-weight: 700;
 		font-size: 13px;
 		letter-spacing: 0.1em;
@@ -437,13 +336,13 @@
 	.section-head p {
 		font-size: 17px;
 		line-height: 1.6;
-		color: #54697a;
+		color: var(--text-body);
 		margin-top: 16px;
 	}
 
 	/* hero */
 	.hero {
-		background: linear-gradient(180deg, #f4f8fb 0%, #ffffff 100%);
+		background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 100%);
 	}
 
 	.hero-inner {
@@ -460,8 +359,8 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 9px;
-		background: #e4eef6;
-		color: #1078b2;
+		background: var(--bg-badge);
+		color: var(--brand);
 		font-weight: 700;
 		font-size: 13px;
 		letter-spacing: 0.06em;
@@ -475,13 +374,13 @@
 		width: 7px;
 		height: 7px;
 		border-radius: 50%;
-		background: #1078b2;
+		background: var(--brand);
 	}
 
 	.lead {
 		font-size: 18px;
 		line-height: 1.65;
-		color: #54697a;
+		color: var(--text-body);
 		max-width: 520px;
 		margin-bottom: 34px;
 	}
@@ -493,7 +392,7 @@
 	}
 
 	.btn-primary {
-		background: #1078b2;
+		background: var(--btn-bg);
 		color: #fff;
 		text-decoration: none;
 		font-weight: 700;
@@ -506,7 +405,7 @@
 	}
 
 	.btn-primary:hover {
-		background: #0c5f8f;
+		background: var(--btn-bg-hover);
 		transform: translateY(-2px);
 	}
 
@@ -516,9 +415,9 @@
 	}
 
 	.btn-secondary {
-		background: #fff;
-		color: #304557;
-		border: 1.5px solid #cdd9e2;
+		background: var(--bg);
+		color: var(--text-nav);
+		border: 1.5px solid var(--border-strong);
 		text-decoration: none;
 		font-weight: 700;
 		font-size: 16px;
@@ -528,7 +427,7 @@
 	}
 
 	.btn-secondary:hover {
-		border-color: #1078b2;
+		border-color: var(--brand);
 	}
 
 	.hero-photo {
@@ -547,8 +446,8 @@
 		position: absolute;
 		bottom: -22px;
 		left: -22px;
-		background: #fff;
-		border: 1px solid #e6ecf1;
+		background: var(--bg);
+		border: 1px solid var(--border);
 		border-radius: 14px;
 		padding: 18px 22px;
 		box-shadow: 0 20px 40px -18px rgba(48, 69, 87, 0.35);
@@ -565,19 +464,19 @@
 	.hero-card-name {
 		font-weight: 700;
 		font-size: 16px;
-		color: #243645;
+		color: var(--text-strong);
 	}
 
 	.hero-card-sub {
 		font-size: 13px;
-		color: #778998;
+		color: var(--muted);
 	}
 
 	/* trust strip */
 	.trust {
-		border-top: 1px solid #e6ecf1;
-		border-bottom: 1px solid #e6ecf1;
-		background: #fff;
+		border-top: 1px solid var(--border);
+		border-bottom: 1px solid var(--border);
+		background: var(--bg);
 	}
 
 	.trust-inner {
@@ -596,7 +495,7 @@
 	.stat-nr {
 		font-size: 26px;
 		font-weight: 700;
-		color: #1078b2;
+		color: var(--brand);
 	}
 
 	.stat-nr.big {
@@ -605,7 +504,7 @@
 
 	.stat-sub {
 		font-size: 13px;
-		color: #778998;
+		color: var(--muted);
 	}
 
 	/* behandelingen */
@@ -616,10 +515,10 @@
 	}
 
 	.svc {
-		border: 1px solid #e6ecf1;
+		border: 1px solid var(--border);
 		border-radius: 16px;
 		padding: 32px 30px;
-		background: #fff;
+		background: var(--bg);
 		transition:
 			box-shadow 0.25s,
 			transform 0.25s,
@@ -627,7 +526,7 @@
 	}
 
 	.svc:hover {
-		border-color: #1078b2;
+		border-color: var(--brand);
 		box-shadow: 0 20px 40px -24px rgba(48, 69, 87, 0.35);
 		transform: translateY(-3px);
 	}
@@ -635,7 +534,7 @@
 	.svc-nr {
 		font-size: 14px;
 		font-weight: 700;
-		color: #1078b2;
+		color: var(--brand);
 		letter-spacing: 0.05em;
 		margin-bottom: 18px;
 	}
@@ -643,21 +542,21 @@
 	.svc h3 {
 		font-size: 20px;
 		font-weight: 700;
-		color: #243645;
+		color: var(--text-strong);
 		margin-bottom: 10px;
 	}
 
 	.svc p {
 		font-size: 15px;
 		line-height: 1.6;
-		color: #5b7082;
+		color: var(--text-body-soft);
 	}
 
 	/* over */
 	.over {
-		background: #f4f8fb;
-		border-top: 1px solid #e6ecf1;
-		border-bottom: 1px solid #e6ecf1;
+		background: var(--bg-soft);
+		border-top: 1px solid var(--border);
+		border-bottom: 1px solid var(--border);
 	}
 
 	.over-inner {
@@ -686,7 +585,7 @@
 	.over-p {
 		font-size: 17px;
 		line-height: 1.7;
-		color: #54697a;
+		color: var(--text-body);
 		margin-bottom: 18px;
 	}
 
@@ -710,7 +609,7 @@
 	}
 
 	.step {
-		border: 1px solid #e6ecf1;
+		border: 1px solid var(--border);
 		border-radius: 16px;
 		padding: 30px;
 	}
@@ -719,8 +618,8 @@
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
-		background: #e4eef6;
-		color: #1078b2;
+		background: var(--bg-badge);
+		color: var(--brand);
 		font-weight: 700;
 		font-size: 17px;
 		display: flex;
@@ -733,16 +632,16 @@
 	.info-card p {
 		font-size: 15px;
 		line-height: 1.6;
-		color: #5b7082;
+		color: var(--text-body-soft);
 	}
 
 	.step strong {
-		color: #243645;
+		color: var(--text-strong);
 	}
 
 	.info-card {
-		background: #f4f8fb;
-		border: 1px solid #e6ecf1;
+		background: var(--bg-soft);
+		border: 1px solid var(--border);
 		border-radius: 16px;
 		padding: 24px 26px;
 	}
@@ -754,16 +653,16 @@
 
 	.info-title {
 		font-weight: 700;
-		color: #243645;
+		color: var(--text-strong);
 		font-size: 15px;
 		margin-bottom: 6px;
 	}
 
 	/* tarieven */
 	.tarieven {
-		background: #f4f8fb;
-		border-top: 1px solid #e6ecf1;
-		border-bottom: 1px solid #e6ecf1;
+		background: var(--bg-soft);
+		border-top: 1px solid var(--border);
+		border-bottom: 1px solid var(--border);
 	}
 
 	.price-grid {
@@ -774,8 +673,8 @@
 	}
 
 	.price-card {
-		background: #fff;
-		border: 1px solid #e6ecf1;
+		background: var(--bg);
+		border: 1px solid var(--border);
 		border-radius: 18px;
 		padding: 36px;
 	}
@@ -783,13 +682,13 @@
 	.price-card h3 {
 		font-size: 18px;
 		font-weight: 700;
-		color: #243645;
+		color: var(--text-strong);
 		margin-bottom: 6px;
 	}
 
 	.price-sub {
 		font-size: 14px;
-		color: #778998;
+		color: var(--muted);
 		margin-bottom: 24px;
 	}
 
@@ -798,9 +697,9 @@
 		justify-content: space-between;
 		align-items: baseline;
 		padding: 16px 0;
-		border-bottom: 1px solid #eef3f6;
+		border-bottom: 1px solid var(--border-soft);
 		font-size: 16px;
-		color: #3a4b58;
+		color: var(--text-price);
 	}
 
 	.price-row.last {
@@ -810,13 +709,13 @@
 	.price {
 		font-size: 19px;
 		font-weight: 700;
-		color: #1078b2;
+		color: var(--brand);
 		white-space: nowrap;
 		margin-left: 16px;
 	}
 
 	.muted {
-		color: #778998;
+		color: var(--muted);
 		font-size: 13px;
 	}
 
@@ -854,12 +753,12 @@
 	.pay-note {
 		text-align: center;
 		font-size: 15px;
-		color: #54697a;
+		color: var(--text-body);
 		margin-top: 28px;
 	}
 
 	.pay-note strong {
-		color: #243645;
+		color: var(--text-strong);
 	}
 
 	/* adres */
@@ -877,7 +776,7 @@
 	}
 
 	.adres-card {
-		border: 1px solid #e6ecf1;
+		border: 1px solid var(--border);
 		border-radius: 16px;
 		padding: 30px;
 	}
@@ -885,7 +784,7 @@
 	.adres-card h3 {
 		font-size: 16px;
 		font-weight: 700;
-		color: #1078b2;
+		color: var(--brand);
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
 		margin-bottom: 14px;
@@ -894,13 +793,13 @@
 	.adres-lijn {
 		font-size: 19px;
 		line-height: 1.5;
-		color: #243645;
+		color: var(--text-strong);
 		font-weight: 500;
 	}
 
 	.adres-note {
 		font-size: 15px;
-		color: #778998;
+		color: var(--muted);
 		margin-top: 12px;
 	}
 
@@ -914,7 +813,7 @@
 	.uur-rij {
 		display: flex;
 		justify-content: space-between;
-		border-bottom: 1px solid #eef3f6;
+		border-bottom: 1px solid var(--border-soft);
 		padding-bottom: 11px;
 	}
 
@@ -924,17 +823,17 @@
 	}
 
 	.uur-rij span:first-child {
-		color: #54697a;
+		color: var(--text-body);
 	}
 
 	.open {
 		font-weight: 700;
-		color: #243645;
+		color: var(--text-strong);
 	}
 
 	.dicht {
 		font-weight: 500;
-		color: #a2b0bb;
+		color: var(--muted-weak);
 	}
 
 	iframe {

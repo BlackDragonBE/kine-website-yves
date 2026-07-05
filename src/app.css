@@ -18,6 +18,49 @@
 	--font-sans: 'Montserrat', sans-serif;
 }
 
+/* kleurpalet: licht standaard, donker via data-theme (gezet in app.html vóór de paint) */
+:root {
+	color-scheme: light;
+	--bg: #ffffff;
+	--bg-soft: #f4f8fb;
+	--bg-badge: #e4eef6;
+	--border: #e6ecf1;
+	--border-soft: #eef3f6;
+	--border-strong: #cdd9e2;
+	--text-strong: #243645;
+	--text-nav: #304557;
+	--text-body: #54697a;
+	--text-body-soft: #5b7082;
+	--text-price: #3a4b58;
+	--muted: #778998;
+	--muted-weak: #a2b0bb;
+	--brand: #1078b2;
+	--btn-bg: #1078b2;
+	--btn-bg-hover: #0c5f8f;
+	--nav-bg: rgba(255, 255, 255, 0.92);
+}
+
+[data-theme='dark'] {
+	color-scheme: dark;
+	--bg: #0f1922;
+	--bg-soft: #15222d;
+	--bg-badge: #1c3242;
+	--border: #24384a;
+	--border-soft: #20313f;
+	--border-strong: #3a5468;
+	--text-strong: #e9f0f6;
+	--text-nav: #d8e3eb;
+	--text-body: #a5b8c6;
+	--text-body-soft: #9aaebd;
+	--text-price: #c7d5df;
+	--muted: #7e94a5;
+	--muted-weak: #64798b;
+	--brand: #4da8dc;
+	--btn-bg: #1078b2;
+	--btn-bg-hover: #1a8ad0;
+	--nav-bg: rgba(15, 25, 34, 0.92);
+}
+
 html {
 	scroll-behavior: smooth;
 }
@@ -34,6 +77,7 @@ html {
 }
 
 body {
+	background: var(--bg);
 	font-family: 'Montserrat', sans-serif;
 	overflow-x: clip;
 	-webkit-text-size-adjust: 100%;

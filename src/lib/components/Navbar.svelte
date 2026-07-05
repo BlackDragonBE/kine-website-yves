@@ -1,26 +1,39 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { resolve } from '$app/paths';
 	import { afspraakUrl } from '$lib/config';
+	import { lang, locales, messages, setLang } from '$lib/i18n.svelte';
 
 	const home = resolve('/');
 
 	let menuOpen = $state(false);
+	let dark = $state(browser && document.documentElement.dataset.theme === 'dark');
 
-	const links = [
-		{ hash: '#over', label: 'Over' },
-		{ hash: '#behandelingen', label: 'Behandelingen' },
-		{ hash: '#praktisch', label: 'Praktisch' },
-		{ hash: '#tarieven', label: 'Tarieven' },
-		{ hash: '#contact', label: 'Contact' }
-	];
+	const t = $derived(messages[lang.current]);
+
+	function toggleTheme() {
+		dark = !dark;
+		document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+		localStorage.setItem('theme', dark ? 'dark' : 'light');
+	}
 </script>
 
 <div class="utility">
 	<div class="utility-inner">
 		<span class="utility-adres">de Neufforgestraat 2, 1830 Machelen</span>
 		<span class="utility-right">
-			<span class="utility-uren">Ma–Vr&nbsp;·&nbsp;08:00–20:00</span>
+			<span class="utility-uren">{t.nav.uren}&nbsp;·&nbsp;08:00–20:00</span>
 			<a href="tel:+32494836584">0494 83 65 84</a>
+			<span class="langs">
+				{#each locales as l (l)}
+					<button
+						type="button"
+						class:active={lang.current === l}
+						onclick={() => setLang(l)}
+						aria-pressed={lang.current === l}>{l.toUpperCase()}</button
+					>
+				{/each}
+			</span>
 		</span>
 	</div>
 </div>
@@ -33,19 +46,57 @@
 			>
 		</a>
 		<div class="links">
-			{#each links as link (link.hash)}
+			{#each t.nav.links as link (link.hash)}
 				<a href="{home}{link.hash}">{link.label}</a>
 			{/each}
-			<a href={afspraakUrl} rel="external" class="btn-afspraak">Afspraak maken</a>
+			<a href={afspraakUrl} rel="external" class="btn-afspraak">{t.nav.afspraak}</a>
 		</div>
+		<button
+			type="button"
+			class="theme-btn"
+			aria-label={dark ? t.nav.licht : t.nav.donker}
+			onclick={toggleTheme}
+		>
+			{#if dark}
+				<svg
+					viewBox="0 0 24 24"
+					width="18"
+					height="18"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					aria-hidden="true"
+				>
+					<circle cx="12" cy="12" r="4" />
+					<path
+						d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+					/>
+				</svg>
+			{:else}
+				<svg
+					viewBox="0 0 24 24"
+					width="18"
+					height="18"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z" />
+				</svg>
+			{/if}
+		</button>
 		<div class="nav-actions">
-			<a href={afspraakUrl} rel="external" class="btn-afspraak compact">Afspraak</a>
+			<a href={afspraakUrl} rel="external" class="btn-afspraak compact">{t.nav.afspraakKort}</a>
 			<button
 				type="button"
 				class="menu-btn"
 				aria-expanded={menuOpen}
 				aria-controls="mobiel-menu"
-				aria-label={menuOpen ? 'Menu sluiten' : 'Menu openen'}
+				aria-label={menuOpen ? t.nav.menuDicht : t.nav.menuOpen}
 				onclick={() => (menuOpen = !menuOpen)}
 			>
 				<span class="bar" class:open={menuOpen}></span>
@@ -56,11 +107,11 @@
 	</div>
 	{#if menuOpen}
 		<div id="mobiel-menu" class="mobile-menu">
-			{#each links as link (link.hash)}
+			{#each t.nav.links as link (link.hash)}
 				<a href="{home}{link.hash}" onclick={() => (menuOpen = false)}>{link.label}</a>
 			{/each}
 			<a href="tel:+32494836584" class="menu-tel" onclick={() => (menuOpen = false)}
-				>Bel ons · 0494 83 65 84</a
+				>{t.nav.belOns} · 0494 83 65 84</a
 			>
 		</div>
 	{/if}
@@ -98,13 +149,40 @@
 		margin: -6px 0;
 	}
 
+	.langs {
+		display: flex;
+		gap: 2px;
+	}
+
+	.langs button {
+		background: none;
+		border: 0;
+		color: #cfe0ee;
+		font: inherit;
+		padding: 4px 6px;
+		margin: -4px 0;
+		cursor: pointer;
+		border-radius: 5px;
+	}
+
+	.langs button:hover {
+		color: #ffffff;
+	}
+
+	.langs button.active {
+		color: #ffffff;
+		font-weight: 700;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
 	nav {
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		background: rgba(255, 255, 255, 0.92);
+		background: var(--nav-bg);
 		backdrop-filter: blur(10px);
-		border-bottom: 1px solid #e6ecf1;
+		border-bottom: 1px solid var(--border);
 	}
 
 	.nav-inner {
@@ -123,6 +201,7 @@
 		gap: 12px;
 		text-decoration: none;
 		flex-shrink: 0;
+		margin-right: auto;
 	}
 
 	.logo {
@@ -138,11 +217,11 @@
 	}
 
 	.kine {
-		color: #304557;
+		color: var(--text-nav);
 	}
 
 	.demol {
-		color: #1078b2;
+		color: var(--brand);
 	}
 
 	.links {
@@ -152,7 +231,7 @@
 	}
 
 	.links a {
-		color: #304557;
+		color: var(--text-nav);
 		text-decoration: none;
 		font-weight: 500;
 		font-size: 15px;
@@ -161,11 +240,11 @@
 	}
 
 	.links a:hover {
-		color: #1078b2;
+		color: var(--brand);
 	}
 
 	.btn-afspraak {
-		background: #1078b2;
+		background: var(--btn-bg);
 		color: #fff !important;
 		font-weight: 700 !important;
 		padding: 11px 22px !important;
@@ -176,7 +255,27 @@
 	}
 
 	.btn-afspraak:hover {
-		background: #0c5f8f;
+		background: var(--btn-bg-hover);
+	}
+
+	.theme-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		border: 1.5px solid var(--border-strong);
+		border-radius: 9px;
+		background: var(--bg);
+		color: var(--text-nav);
+		cursor: pointer;
+		padding: 0;
+		flex-shrink: 0;
+	}
+
+	.theme-btn:hover {
+		border-color: var(--brand);
+		color: var(--brand);
 	}
 
 	.nav-actions {
@@ -200,9 +299,9 @@
 		gap: 5px;
 		width: 44px;
 		height: 44px;
-		border: 1.5px solid #cdd9e2;
+		border: 1.5px solid var(--border-strong);
 		border-radius: 9px;
-		background: #fff;
+		background: var(--bg);
 		cursor: pointer;
 		padding: 0;
 	}
@@ -211,7 +310,7 @@
 		width: 18px;
 		height: 2px;
 		border-radius: 2px;
-		background: #304557;
+		background: var(--text-nav);
 		transition:
 			transform 0.25s,
 			opacity 0.25s;
@@ -232,13 +331,13 @@
 	.mobile-menu {
 		display: flex;
 		flex-direction: column;
-		border-top: 1px solid #e6ecf1;
-		background: #fff;
+		border-top: 1px solid var(--border);
+		background: var(--bg);
 		padding: 8px 16px 16px;
 	}
 
 	.mobile-menu a {
-		color: #304557;
+		color: var(--text-nav);
 		text-decoration: none;
 		font-weight: 700;
 		font-size: 17px;
@@ -247,12 +346,12 @@
 	}
 
 	.mobile-menu a:active {
-		background: #f4f8fb;
+		background: var(--bg-soft);
 	}
 
 	.menu-tel {
-		color: #1078b2 !important;
-		border-top: 1px solid #eef3f6;
+		color: var(--brand) !important;
+		border-top: 1px solid var(--border-soft);
 		margin-top: 6px;
 		border-radius: 0 0 10px 10px !important;
 	}

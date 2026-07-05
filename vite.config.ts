@@ -6,5 +6,7 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(), // ← toevoegen
 		sveltekit()
-	]
+	],
+	// PORT wordt gezet door tooling (o.a. Claude preview); anders gewoon de vite-default
+	server: { port: process.env.PORT ? Number(process.env.PORT) : undefined }
 });
