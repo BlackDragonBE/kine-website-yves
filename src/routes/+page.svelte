@@ -57,7 +57,7 @@
 			nr: '05',
 			titel: 'Rug- & houdingsscholing',
 			tekst:
-				'Leer uw rug correct belasten in werk en dagelijks leven om klachten te voorkomen — én behandeling van chronische lage rugpijn.'
+				'Leer uw rug correct belasten in werk en dagelijks leven om klachten te voorkomen, én behandeling van chronische lage rugpijn.'
 		},
 		{
 			nr: '06',
@@ -125,7 +125,7 @@
 			<h1>Uw herstel, met vakkundige handen begeleid.</h1>
 			<p class="lead">
 				Persoonlijke kinesitherapie en manuele therapie in hartje Machelen. Wij behandelen klachten
-				aan rug, nek, gewrichten en spieren — met tijd, aandacht en jarenlange expertise.
+				aan rug, nek, gewrichten en spieren. Dat doen we met tijd, aandacht en jarenlange expertise.
 			</p>
 			<div class="cta-row">
 				<a href={afspraakUrl} rel="external" class="btn-primary">Afspraak maken</a>
@@ -173,7 +173,7 @@
 		<div class="eyebrow">Behandelingen</div>
 		<h2>Zorg afgestemd op uw klacht</h2>
 		<p>
-			Van een acute blessure tot langdurige rug- en nekklachten — elke behandeling start met een
+			Van een acute blessure tot langdurige rug- en nekklachten: elke behandeling start met een
 			grondig onderzoek en een plan op maat.
 		</p>
 	</div>
@@ -1118,7 +1118,7 @@
 			font-size: 16px;
 		}
 
-		/* knoppen over de volle breedte — makkelijker aan te tikken */
+		/* knoppen over de volle breedte, makkelijker aan te tikken */
 		.cta-row {
 			flex-direction: column;
 			align-items: stretch;
